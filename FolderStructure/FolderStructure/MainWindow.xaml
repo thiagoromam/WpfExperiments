@@ -1,0 +1,71 @@
+﻿<Window x:Class="FolderStructure.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:folderStructure="clr-namespace:FolderStructure"
+        xmlns:structures="clr-namespace:FolderStructure.Structures"
+        xmlns:converters="clr-namespace:FolderStructure.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+
+    <Window.DataContext>
+        <folderStructure:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanConverter BooleanConverter="{StaticResource BooleanToVisibilityConverter}" x:Key="InverseBooleanToVisibilityConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Button Content="Add Characters" Command="{Binding AddCharactersCommand}" Visibility="{Binding CharactersAdded, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Button Content="Remove Characters" Command="{Binding RemoveCharactersCommand}" Visibility="{Binding CharactersAdded, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Content="Add Scenarios" Command="{Binding AddScenariosCommand}"  Visibility="{Binding ScenariosAdded, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Button Content="Remove Scenarios" Command="{Binding RemoveScenariosCommand}"  Visibility="{Binding ScenariosAdded, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Content="Add Unused (Test)" Command="{Binding AddUnusedTestCommand}"  Visibility="{Binding UnusedTestAdded, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Button Content="Remove Unused (Test)" Command="{Binding RemoveUnusedTestCommand}"  Visibility="{Binding UnusedTestAdded, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1">
+                <Button Content="Add Knuckles to Heroes" Command="{Binding AddKnucklesToHeroesCommand}"  Visibility="{Binding KnucklesAddedToHeroes, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Button Content="Remove Knuckles from Heroes" Command="{Binding RemoveKnucklesFromHeroesCommand}"  Visibility="{Binding KnucklesAddedToHeroes, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Content="Add Villains to Characters" Command="{Binding AddVillainsToCharactersCommand}" Visibility="{Binding VillainsAddedToCharacters, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Button Content="Remove Villains from Characters" Command="{Binding RemoveVillainsFromCharactersCommand}" Visibility="{Binding VillainsAddedToCharacters, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button Content="Add Metal Sonic to Villains" Command="{Binding AddMetalSonicToVillainsCommand}" Visibility="{Binding MetalSonicAddedToVillains, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <Button Content="Remove Metal Sonic from Villains" Command="{Binding RemoveMetalSonicFromVillainsCommand}" Visibility="{Binding MetalSonicAddedToVillains, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+        </Grid>
+
+        <TreeView ItemsSource="{Binding Nodes}" Grid.Row="1" Margin="0 10 0 0">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Grid>
+                        <TextBlock Text="{Binding Name}" />
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem" d:DataContext="{d:DesignInstance structures:Node, d:IsDesignTimeCreatable=False}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsFolder}" Value="False">
+                            <Setter Property="Foreground" Value="CornflowerBlue" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+    </Grid>
+</Window>
