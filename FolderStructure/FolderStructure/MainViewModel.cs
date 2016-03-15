@@ -219,6 +219,9 @@ namespace FolderStructure
         }
         private void RemoveMetalSonicFromVillains()
         {
+            if (_villains == null)
+                return;
+
             _villains.Remove(_metalSonic);
             _metalSonic = null;
 
