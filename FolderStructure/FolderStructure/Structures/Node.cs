@@ -27,6 +27,6 @@ namespace FolderStructure.Structures
         }
         public bool IsFolder { get; }
         public NodeCollection Children { get; }
-        internal object WrappedObject { get; }
+        public object WrappedObject { get; }
     }
 }

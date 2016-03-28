@@ -9,7 +9,7 @@ using FolderStructure.Helpers;
 
 namespace FolderStructure.Structures
 {
-    public abstract class FolderStructureCollection<TNode, TFolder, TItem> : IObservableCollection<Node>
+    public abstract class FolderStructureCollection<TNode, TFolder, TItem> : IReadOnlyObservableCollection<Node>
         where TFolder : TNode
         where TItem : TNode
     {

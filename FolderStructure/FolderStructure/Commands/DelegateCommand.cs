@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace FolderStructure.Components
+namespace FolderStructure.Commands
 {
     public class DelegateCommand : ICommand
     {

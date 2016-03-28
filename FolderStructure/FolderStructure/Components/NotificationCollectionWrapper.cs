@@ -21,9 +21,9 @@ namespace FolderStructure.Components
         {
             _collection.Add(t);
         }
-        public virtual void Remove(T t)
+        public virtual bool Remove(T t)
         {
-            _collection.Remove(t);
+            return _collection.Remove(t);
         }
 
         #region ObservableCollection
