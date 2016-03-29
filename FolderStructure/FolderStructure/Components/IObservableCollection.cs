@@ -9,7 +9,7 @@ namespace FolderStructure.Components
     {
     }
 
-    public interface IReadOnlyObservableCollection<T> : IEnumerable<T>, IObservableCollection
+    public interface IReadOnlyObservableCollection<out T> : IEnumerable<T>, IObservableCollection
     {
     }
 

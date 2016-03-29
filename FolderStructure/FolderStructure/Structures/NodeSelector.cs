@@ -11,10 +11,12 @@ namespace FolderStructure.Structures
 
     internal class NodeSelector<TFolder, TItem> : INodeSelector
     {
-        private readonly Func<TFolder, IObservableCollection> _getFolderCollection;
-        private readonly string _namePath;
+        public delegate IObservableCollection GetFolderCollection(TFolder folder);
 
-        public NodeSelector(string namePath, Func<TFolder, IObservableCollection> getFolderCollection)
+        private readonly string _namePath;
+        private readonly GetFolderCollection _getFolderCollection;
+
+        public NodeSelector(string namePath, GetFolderCollection getFolderCollection)
         {
             _namePath = namePath;
             _getFolderCollection = getFolderCollection;

@@ -7,7 +7,7 @@
         xmlns:structures="clr-namespace:FolderStructure.Structures"
         xmlns:commands="clr-namespace:FolderStructure.Commands"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" Width="525">
 
     <Window.DataContext>
         <folderStructure:MainViewModel />
@@ -20,67 +20,96 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-        </Grid>
-        
-        <TreeView ItemsSource="{Binding Nodes}" Grid.Row="1" Margin="0 10 0 0">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <Grid>
-                        <TextBlock Text="{Binding Name}" />
-                    </Grid>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem" d:DataContext="{d:DesignInstance structures:Node, d:IsDesignTimeCreatable=False}">
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="Add folder"
-                                          CommandParameter="{Binding WrappedObject}"
-                                          Command="{StaticResource AddFolderCommand}" />
-                                <MenuItem Header="Add item"
-                                          CommandParameter="{Binding WrappedObject}"
-                                          Command="{StaticResource AddItemCommand}" />
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsFolder}" Value="False">
-                            <Setter Property="Foreground" Value="CornflowerBlue" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TreeView.ItemContainerStyle>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <TreeView.Style>
-                <Style TargetType="TreeView" BasedOn="{StaticResource {x:Type TreeView}}">
-                    <Style.Setters>
+            <TextBlock Text="SpriteSheets" Grid.Row="0" />
+            <TreeView ItemsSource="{Binding Nodes}" Grid.Row="1" Margin="0 10 0 0">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <Grid>
+                            <TextBlock Text="{Binding Name}" />
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem" d:DataContext="{d:DesignInstance structures:Node, d:IsDesignTimeCreatable=False}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <ContextMenu>
                                     <MenuItem Header="Add folder"
-                                              CommandParameter="{Binding SpriteSheets}"
-                                              Command="{StaticResource AddFolderCommand}" />
+                                          CommandParameter="{Binding WrappedObject}"
+                                          Command="{StaticResource AddFolderCommand}" />
                                     <MenuItem Header="Add item"
-                                              CommandParameter="{Binding SpriteSheets}"
-                                              Command="{StaticResource AddItemCommand}" />
+                                          CommandParameter="{Binding WrappedObject}"
+                                          Command="{StaticResource AddItemCommand}" />
                                 </ContextMenu>
                             </Setter.Value>
                         </Setter>
-                    </Style.Setters>
-                </Style>
-            </TreeView.Style>
-        </TreeView>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFolder}" Value="False">
+                                <Setter Property="Foreground" Value="CornflowerBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+
+                <TreeView.Style>
+                    <Style TargetType="TreeView" BasedOn="{StaticResource {x:Type TreeView}}">
+                        <Style.Setters>
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Header="Add folder"
+                                              CommandParameter="{Binding SpriteSheets}"
+                                              Command="{StaticResource AddFolderCommand}" />
+                                        <MenuItem Header="Add item"
+                                              CommandParameter="{Binding SpriteSheets}"
+                                              Command="{StaticResource AddItemCommand}" />
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                        </Style.Setters>
+                    </Style>
+                </TreeView.Style>
+            </TreeView>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Filtered SpriteSheets" Grid.Row="0" />
+            <TreeView ItemsSource="{Binding FilteredNodes}" Grid.Row="1" Margin="0 10 0 0">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <Grid>
+                            <TextBlock Text="{Binding Name}" />
+                        </Grid>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem" d:DataContext="{d:DesignInstance structures:Node, d:IsDesignTimeCreatable=False}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFolder}" Value="False">
+                                <Setter Property="Foreground" Value="CornflowerBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+        </Grid>
+
     </Grid>
 </Window>
