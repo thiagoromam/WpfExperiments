@@ -1,11 +1,12 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using FolderStructure.Components;
 
 namespace FolderStructure.Structures
 {
-    public class Node : ExtendedDependencyObject
+    public class Node : ExtendedDependencyObject, IDisposable
     {
         public static readonly DependencyProperty NameProperty;
 
@@ -24,8 +25,8 @@ namespace FolderStructure.Structures
 
             wrappedObject.PropertyChanged += OnWrappedObjectPropertyChanged;
         }
-
-        public object WrappedObject { get; }
+        
+        public INotifyPropertyChanged WrappedObject { get; }
         public string Name
         {
             get { return (string)GetValue(NameProperty); }
@@ -66,6 +67,17 @@ namespace FolderStructure.Structures
         {
             OnPropertyChanged(nameof(WrappedObject));
             _parent?.OnWrappedObjectPropertyChanged(null, e);
+        }
+        
+        public void Dispose()
+        {
+            WrappedObject.PropertyChanged -= OnWrappedObjectPropertyChanged;
+
+            if (IsFolder)
+            {
+                Children.CollectionChanged -= OnChildrenCollectionChanged;
+                Children.Dispose();
+            }
         }
     }
 }

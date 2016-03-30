@@ -69,8 +69,13 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\SpritesheetVisibilityConverter.cs" />
-    <Compile Include="Helpers\ExpressionHelper.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Helpers\ExpressionHelper.cs" />
+    <Compile Include="OddsViewModel.cs" />
+    <Compile Include="OddsWindow.xaml.cs">
+      <DependentUpon>OddsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\ISpriteSheetNode.cs" />
     <Compile Include="Models\SpriteSheet.cs" />
     <Compile Include="Models\SpriteSheetFolder.cs" />
@@ -80,6 +85,10 @@
     <Compile Include="Structures\Node.cs" />
     <Compile Include="Structures\NodeCollection.cs" />
     <Compile Include="Structures\NodeSelector.cs" />
+    <Page Include="OddsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -9,7 +9,7 @@ using FolderStructure.Helpers;
 
 namespace FolderStructure.Structures
 {
-    public abstract class FolderStructureCollection<TNode, TFolder, TItem> : IReadOnlyObservableCollection<Node>
+    public abstract class FolderStructureCollection<TNode, TFolder, TItem> : IReadOnlyObservableCollection<Node>, IDisposable
         where TFolder : TNode, INotifyPropertyChanged
         where TItem : TNode, INotifyPropertyChanged
     {
@@ -56,5 +56,10 @@ namespace FolderStructure.Structures
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            Nodes.Dispose();
+        }
     }
 }

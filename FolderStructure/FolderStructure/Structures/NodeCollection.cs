@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -7,7 +8,7 @@ using FolderStructure.Components;
 
 namespace FolderStructure.Structures
 {
-    public class NodeCollection : ObservableCollection<Node>
+    public class NodeCollection : ObservableCollection<Node>, IDisposable
     {
         private readonly Node _node;
         private readonly INodeSelector _nodeSelector;
@@ -38,7 +39,17 @@ namespace FolderStructure.Structures
         private void RemoveItems(IEnumerable items)
         {
             foreach (var oldItem in items)
-                Remove(this.Single(n => n.WrappedObject == oldItem));
+            {
+                var item = this.Single(n => Equals(n.WrappedObject, oldItem));
+                Remove(item);
+                item.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var item in Items)
+                item.Dispose();
         }
     }
 }

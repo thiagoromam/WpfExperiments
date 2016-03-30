@@ -1,4 +1,6 @@
-﻿using FolderStructure.Components;
+﻿using System.Windows.Input;
+using FolderStructure.Commands;
+using FolderStructure.Components;
 using FolderStructure.Models;
 
 namespace FolderStructure
@@ -7,11 +9,18 @@ namespace FolderStructure
     {
         public MainViewModel()
         {
-            SpriteSheets = new ExtendedObservableCollection<ISpriteSheetNode>();
-            Nodes = new SpriteSheetsCollection(SpriteSheets);
+            SpriteSheets = Data.SpriteSheets;
+            Nodes = new SpriteSheetsCollection(Data.SpriteSheets);
+            OpenOddsWindowCommand = new DelegateCommand(OpenOddsWindow);
         }
 
-        public ExtendedObservableCollection<ISpriteSheetNode> SpriteSheets { get; }
+        public IObservableCollection<ISpriteSheetNode> SpriteSheets { get; }
         public SpriteSheetsCollection Nodes { get; }
+        public ICommand OpenOddsWindowCommand { get; }
+
+        private void OpenOddsWindow(object parameter)
+        {
+            new OddsWindow().Show();
+        }
     }
 }
