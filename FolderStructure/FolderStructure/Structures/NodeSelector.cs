@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Windows.Data;
 using FolderStructure.Components;
 
@@ -6,7 +6,7 @@ namespace FolderStructure.Structures
 {
     internal interface INodeSelector
     {
-        Node Create(object obj);
+        Node Create(Node parent, INotifyPropertyChanged obj);
     }
 
     internal class NodeSelector<TFolder, TItem> : INodeSelector
@@ -22,17 +22,12 @@ namespace FolderStructure.Structures
             _getFolderCollection = getFolderCollection;
         }
 
-        public Node Create(object obj)
+        public Node Create(Node parent, INotifyPropertyChanged obj)
         {
-            Node node = null;
+            var node = new Node(parent, obj);
 
             if (obj is TFolder)
-                node = new Node(obj, new NodeCollection(_getFolderCollection((TFolder)obj), this));
-            else if (obj is TItem)
-                node = new Node(obj);
-
-            if (node == null)
-                throw new Exception("Object type not valid.");
+                node.Children = new NodeCollection(node, _getFolderCollection((TFolder)obj), this);
 
             BindingOperations.SetBinding(node, Node.NameProperty, new Binding(_namePath) { Source = obj });
 

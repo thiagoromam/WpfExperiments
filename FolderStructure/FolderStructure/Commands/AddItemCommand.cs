@@ -15,7 +15,12 @@ namespace FolderStructure.Commands
         public override void Execute(object parameter)
         {
             var collection = (IObservableCollection<ISpriteSheetNode>)parameter;
-            collection.Add(new SpriteSheet($"Spritesheet {_numer++}"));
+            collection.Add(new SpriteSheet(NextName()));
+        }
+
+        public static string NextName()
+        {
+            return $"Spritesheet {_numer++}";
         }
     }
 }

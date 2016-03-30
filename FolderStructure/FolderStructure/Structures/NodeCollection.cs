@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using FolderStructure.Components;
 
@@ -8,10 +9,12 @@ namespace FolderStructure.Structures
 {
     public class NodeCollection : ObservableCollection<Node>
     {
+        private readonly Node _node;
         private readonly INodeSelector _nodeSelector;
 
-        internal NodeCollection(IObservableCollection source, INodeSelector nodeSelector)
+        internal NodeCollection(Node node, IObservableCollection source, INodeSelector nodeSelector)
         {
+            _node = node;
             _nodeSelector = nodeSelector;
 
             AddItems(source);
@@ -29,8 +32,8 @@ namespace FolderStructure.Structures
 
         private void AddItems(IEnumerable items)
         {
-            foreach (var newItem in items)
-                Add(_nodeSelector.Create(newItem));
+            foreach (INotifyPropertyChanged newItem in items)
+                Add(_nodeSelector.Create(_node, newItem));
         }
         private void RemoveItems(IEnumerable items)
         {

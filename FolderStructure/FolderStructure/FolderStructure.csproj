@@ -58,14 +58,17 @@
     <Compile Include="Commands\AddFolderCommand.cs" />
     <Compile Include="Commands\AddItemCommand.cs" />
     <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\ChangeToNextNameCommand.cs" />
     <Compile Include="Commands\RemoveNodeCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
+    <Compile Include="Components\ExtendedDependencyObject.cs" />
     <Compile Include="Components\ExtendedObservableCollection.cs" />
     <Compile Include="Components\IObservableCollection.cs" />
     <Compile Include="Components\NotificationCollectionWrapper.cs" />
     <Compile Include="Components\NotificationObject.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\SpritesheetVisibilityConverter.cs" />
     <Compile Include="Helpers\ExpressionHelper.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Models\ISpriteSheetNode.cs" />

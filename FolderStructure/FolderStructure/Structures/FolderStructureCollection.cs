@@ -10,8 +10,8 @@ using FolderStructure.Helpers;
 namespace FolderStructure.Structures
 {
     public abstract class FolderStructureCollection<TNode, TFolder, TItem> : IReadOnlyObservableCollection<Node>
-        where TFolder : TNode
-        where TItem : TNode
+        where TFolder : TNode, INotifyPropertyChanged
+        where TItem : TNode, INotifyPropertyChanged
     {
         private NodeCollection _nodes;
 
@@ -23,7 +23,7 @@ namespace FolderStructure.Structures
                 {
                     var namePath = ExpressionHelper.GetExpressionText(GetNameExpression());
                     var selector = new NodeSelector<TFolder, TItem>(namePath, GetChildrenFromFolder);
-                    _nodes = new NodeCollection(GetSource(), selector);
+                    _nodes = new NodeCollection(null, GetSource(), selector);
                 }
 
                 return _nodes;

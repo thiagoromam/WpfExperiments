@@ -1,46 +1,71 @@
 ﻿using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
+using FolderStructure.Components;
 
 namespace FolderStructure.Structures
 {
-    public class Node : DependencyObject
+    public class Node : ExtendedDependencyObject
     {
         public static readonly DependencyProperty NameProperty;
-        public static readonly DependencyProperty IsExpandedProperty;
+
+        private readonly Node _parent;
+        private bool _isExpanded;
+        private NodeCollection _children;
 
         static Node()
         {
             NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(Node), new PropertyMetadata(default(string)));
-            IsExpandedProperty = DependencyProperty.Register("IsExpanded", typeof(bool), typeof(Node), new PropertyMetadata(true));
         }
-        internal Node(object wrappedObject)
+        public Node(Node parent, INotifyPropertyChanged wrappedObject)
         {
+            _parent = parent;
             WrappedObject = wrappedObject;
-        }
-        internal Node(object wrappedObject, NodeCollection children) : this(wrappedObject)
-        {
-            IsFolder = true;
-            Children = children;
 
-            Children.CollectionChanged += (s, e) =>
-            {
-                if (e.Action == NotifyCollectionChangedAction.Add)
-                    IsExpanded = true;
-            };
+            wrappedObject.PropertyChanged += OnWrappedObjectPropertyChanged;
         }
 
+        public object WrappedObject { get; }
         public string Name
         {
             get { return (string)GetValue(NameProperty); }
             set { SetValue(NameProperty, value); }
         }
-        public bool IsFolder { get; }
         public bool IsExpanded
         {
-            get { return (bool)GetValue(IsExpandedProperty); }
-            set { SetValue(IsExpandedProperty, value); }
+            get { return _isExpanded; }
+            set
+            {
+                if (value == _isExpanded)
+                    return;
+
+                _isExpanded = value;
+                OnPropertyChanged();
+            }
         }
-        public NodeCollection Children { get; }
-        public object WrappedObject { get; }
+        public NodeCollection Children
+        {
+            get { return _children; }
+            internal set
+            {
+                if (_children == null)
+                {
+                    _children = value;
+                    _children.CollectionChanged += OnChildrenCollectionChanged;
+                }
+            }
+        }
+        public bool IsFolder => Children != null;
+
+        private void OnChildrenCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+                IsExpanded = true;
+        }
+        private void OnWrappedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(WrappedObject));
+            _parent?.OnWrappedObjectPropertyChanged(null, e);
+        }
     }
 }

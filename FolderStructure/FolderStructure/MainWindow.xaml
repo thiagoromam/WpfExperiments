@@ -6,6 +6,7 @@
         xmlns:folderStructure="clr-namespace:FolderStructure"
         xmlns:structures="clr-namespace:FolderStructure.Structures"
         xmlns:commands="clr-namespace:FolderStructure.Commands"
+        xmlns:converters="clr-namespace:FolderStructure.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="525">
 
@@ -16,6 +17,8 @@
     <Window.Resources>
         <commands:AddFolderCommand x:Key="AddFolderCommand" />
         <commands:AddItemCommand x:Key="AddItemCommand" />
+        <commands:ChangeToNextNameCommand x:Key="ChangeToNextNameCommand" />
+        <converters:SpritesheetVisibilityConverter x:Key="SpritesheetVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
@@ -51,6 +54,9 @@
                                     <MenuItem Header="Add item"
                                           CommandParameter="{Binding WrappedObject}"
                                           Command="{StaticResource AddItemCommand}" />
+                                    <MenuItem Header="Change to next name"
+                                          CommandParameter="{Binding WrappedObject}"
+                                          Command="{StaticResource ChangeToNextNameCommand}" />
                                 </ContextMenu>
                             </Setter.Value>
                         </Setter>
@@ -90,7 +96,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Filtered SpriteSheets" Grid.Row="0" />
-            <TreeView ItemsSource="{Binding FilteredNodes}" Grid.Row="1" Margin="0 10 0 0">
+            <TreeView ItemsSource="{Binding Nodes}" Grid.Row="1" Margin="0 10 0 0" Name="FilteredNodes">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <Grid>
@@ -100,7 +106,7 @@
                 </TreeView.ItemTemplate>
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="TreeViewItem" d:DataContext="{d:DesignInstance structures:Node, d:IsDesignTimeCreatable=False}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="Visibility" Value="{Binding WrappedObject, Converter={StaticResource SpritesheetVisibilityConverter}}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFolder}" Value="False">
                                 <Setter Property="Foreground" Value="CornflowerBlue" />
