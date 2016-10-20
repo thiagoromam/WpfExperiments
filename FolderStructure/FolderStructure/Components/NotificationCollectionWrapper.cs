@@ -71,6 +71,15 @@ namespace FolderStructure.Components
             _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        protected void Set<TValue>(ref TValue variable, TValue value, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(value, variable))
+            {
+                variable = value;
+                OnPropertyChanged(propertyName);
+            }
+        }
+
         #endregion
     }
 }

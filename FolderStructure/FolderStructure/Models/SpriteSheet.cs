@@ -14,12 +14,7 @@ namespace FolderStructure.Models
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
+            set { Set(ref _name, value); }
         }
     }
 }

@@ -13,5 +13,14 @@ namespace FolderStructure.Components
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        protected void Set<T>(ref T variable, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(value, variable))
+            {
+                variable = value;
+                OnPropertyChanged(propertyName);
+            }
+        }
     }
 }

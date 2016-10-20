@@ -8,7 +8,7 @@ namespace FolderStructure
     {
         public OddsViewModel()
         {
-            Nodes = new SpriteSheetsCollection(MainViewModel.SpriteSheets);
+            Nodes = new SpriteSheetsCollection(Data.SpriteSheets);
         }
 
         public SpriteSheetsCollection Nodes { get; }
