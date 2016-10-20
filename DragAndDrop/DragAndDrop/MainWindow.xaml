@@ -4,9 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DragAndDrop"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:components="clr-namespace:DragAndDrop.Components"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Drag and Drop"
+        Height="350" Width="525">
+    
+    <Window.DataContext>
+        <local:ViewModel />
+    </Window.DataContext>
+    
     <Grid>
-        
+        <TreeView ItemsSource="{Binding GameObjects}">
+            <i:Interaction.Behaviors>
+                <components:FrameworkElementDropBehavior />
+            </i:Interaction.Behaviors>
+            
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsExpanded" Value="True" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+            
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}">
+                        <i:Interaction.Behaviors>
+                            <components:FrameworkElementDragBehavior />
+                            <components:FrameworkElementDropBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
     </Grid>
 </Window>
