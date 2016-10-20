@@ -14,10 +14,10 @@
         <local:ViewModel />
     </Window.DataContext>
     
-    <Grid>
+    <Grid Name="MainGrid">
         <TreeView ItemsSource="{Binding GameObjects}">
             <i:Interaction.Behaviors>
-                <components:FrameworkElementDropBehavior />
+                <components:FrameworkElementDropBehavior DropCommand="{Binding MoveGameObjectCommand}" />
             </i:Interaction.Behaviors>
             
             <TreeView.ItemContainerStyle>
@@ -31,7 +31,7 @@
                     <TextBlock Text="{Binding Name}">
                         <i:Interaction.Behaviors>
                             <components:FrameworkElementDragBehavior />
-                            <components:FrameworkElementDropBehavior />
+                            <components:FrameworkElementDropBehavior DropCommand="{Binding DataContext.MoveGameObjectCommand, ElementName=MainGrid}" />
                         </i:Interaction.Behaviors>
                     </TextBlock>
                 </HierarchicalDataTemplate>

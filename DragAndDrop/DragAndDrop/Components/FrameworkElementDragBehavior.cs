@@ -36,13 +36,14 @@ namespace DragAndDrop.Components
         private void OnMouseLeave(object sender, MouseEventArgs e)
         {
             if (!_isMouseClicked) return;
+            
+            var data = AssociatedObject.DataContext;
+            var type = (data as IDraggable)?.DataType ?? typeof (object);
 
-            var dragObject = AssociatedObject.DataContext as IDragable;
-            if (dragObject != null)
+            if (data != null)
             {
-                var data = new DataObject();
-                data.SetData(dragObject.DataType, AssociatedObject.DataContext);
-                System.Windows.DragDrop.DoDragDrop(AssociatedObject, data, DragDropEffects.Move);
+                var dataObject = new DataObject(type, data);
+                DragDrop.DoDragDrop(AssociatedObject, dataObject, DragDropEffects.Move);
             }
 
             _isMouseClicked = false;

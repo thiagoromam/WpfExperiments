@@ -2,7 +2,7 @@
 
 namespace DragAndDrop.Components
 {
-    public interface IDropable
+    public interface IDroppable
     {
         Type DataType { get; }
 

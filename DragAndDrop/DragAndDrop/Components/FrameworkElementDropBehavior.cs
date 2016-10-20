@@ -1,12 +1,23 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 
 namespace DragAndDrop.Components
 {
     public class FrameworkElementDropBehavior : Behavior<FrameworkElement>
     {
-        private Type _dataType;
+        public static readonly DependencyProperty DropCommandProperty;
+        private object _data;
+
+        static FrameworkElementDropBehavior()
+        {
+            DropCommandProperty = DependencyProperty.Register(
+                "DropCommand",
+                typeof(ICommand),
+                typeof(FrameworkElementDropBehavior),
+                new PropertyMetadata(default(ICommand))
+            );
+        }
 
         protected override void OnAttached()
         {
@@ -18,7 +29,6 @@ namespace DragAndDrop.Components
             AssociatedObject.DragLeave += OnDragLeave;
             AssociatedObject.Drop += OnDrop;
         }
-
         protected override void OnDetaching()
         {
             AssociatedObject.DragEnter -= OnDragEnter;
@@ -29,15 +39,29 @@ namespace DragAndDrop.Components
             base.OnDetaching();
         }
 
+        public ICommand DropCommand
+        {
+            get { return (ICommand)GetValue(DropCommandProperty); }
+            set { SetValue(DropCommandProperty, value); }
+        }
+
         private void OnDragEnter(object sender, DragEventArgs e)
         {
-            _dataType = (AssociatedObject.DataContext as IDropable)?.DataType;
+            var dataType = (AssociatedObject.DataContext as IDroppable)?.DataType ?? typeof(object);
+
+            _data = e.Data.GetData(dataType);
+
+            if (_data == AssociatedObject.DataContext)
+                _data = null;
+
+            if (!DropCommand?.CanExecute(GetCommandParameter()) ?? false)
+                _data = null;
 
             e.Handled = true;
         }
         private void OnDragOver(object sender, DragEventArgs e)
         {
-            if (_dataType == null || !e.Data.GetDataPresent(_dataType))
+            if (_data == null)
                 e.Effects = DragDropEffects.None;
 
             e.Handled = true;
@@ -48,19 +72,31 @@ namespace DragAndDrop.Components
         }
         private void OnDrop(object sender, DragEventArgs e)
         {
-            if (_dataType != null && e.Data.GetDataPresent(_dataType))
+            if (_data != null)
             {
-                var dragable = (IDragable)e.Data.GetData(_dataType);
-                var dropable = (IDropable)AssociatedObject.DataContext;
+                if (DropCommand != null)
+                {
+                    DropCommand.Execute(GetCommandParameter());
+                }
+                else
+                {
+                    var draggable = _data as IDraggable;
+                    var droppable = AssociatedObject.DataContext as IDroppable;
 
-                if (dragable == dropable)
-                    return;
-
-                dragable.Drag();
-                dropable.Drop(dragable);
+                    if (draggable != null && droppable != null)
+                    {
+                        draggable.Drag();
+                        droppable.Drop(draggable);
+                    }
+                }
             }
 
             e.Handled = true;
+        }
+
+        private object GetCommandParameter()
+        {
+            return new[] {_data, AssociatedObject.DataContext};
         }
     }
 }

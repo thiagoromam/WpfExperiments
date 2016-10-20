@@ -53,10 +53,11 @@
     </ApplicationDefinition>
     <Compile Include="Components\FrameworkElementDragBehavior.cs" />
     <Compile Include="Components\FrameworkElementDropBehavior.cs" />
-    <Compile Include="Components\IDragable.cs" />
+    <Compile Include="Components\IDraggable.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="Components\IDropable.cs" />
+    <Compile Include="Components\IDroppable.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="MoveGameObjectCommand.cs" />
     <Compile Include="SceneData.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">

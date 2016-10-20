@@ -4,7 +4,7 @@ using DragAndDrop.Components;
 
 namespace DragAndDrop
 {
-    public class GameObject : IDragable, IDropable
+    public class GameObject : IDraggable, IDroppable
     {
         public GameObject(string name)
         {
