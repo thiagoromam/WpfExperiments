@@ -6,6 +6,6 @@ namespace DragAndDrop.Components
     {
         Type DataType { get; }
 
-        void Drop(object data, int index = -1);
+        void Drop(object data, DropType dropType);
     }
 }

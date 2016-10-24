@@ -17,7 +17,7 @@
     <Grid Name="MainGrid">
         <TreeView ItemsSource="{Binding GameObjects}">
             <i:Interaction.Behaviors>
-                <components:FrameworkElementDropBehavior DropCommand="{Binding MoveGameObjectCommand}" />
+                <components:FrameworkElementDropBehavior DropCommand="{Binding MoveGameObjectCommand}" ShowAdorner="False" />
             </i:Interaction.Behaviors>
             
             <TreeView.ItemContainerStyle>
@@ -28,12 +28,14 @@
             
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" Background="Gray" />
+
                         <i:Interaction.Behaviors>
                             <components:FrameworkElementDragBehavior />
                             <components:FrameworkElementDropBehavior DropCommand="{Binding DataContext.MoveGameObjectCommand, ElementName=MainGrid}" />
                         </i:Interaction.Behaviors>
-                    </TextBlock>
+                    </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

@@ -22,7 +22,7 @@ namespace DragAndDrop
             (Parent?.Children ?? SceneData.GameObjects).Remove(this);
             Parent = null;
         }
-        public void Drop(object data, int index = -1)
+        public void Drop(object data, DropType dropType)
         {
             var gameObject = (GameObject)data;
 

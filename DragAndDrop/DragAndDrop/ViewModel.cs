@@ -17,7 +17,7 @@ namespace DragAndDrop
         public ObservableCollection<GameObject> GameObjects { get; }
         public ICommand MoveGameObjectCommand { get; }
 
-        public void Drop(object data, int index = -1)
+        public void Drop(object data, DropType dropType)
         {
             GameObjects.Add((GameObject)data);
         }

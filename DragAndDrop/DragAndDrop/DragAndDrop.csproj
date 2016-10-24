@@ -51,6 +51,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\DropEventArgs.cs" />
+    <Compile Include="Components\DropType.cs" />
+    <Compile Include="Components\FrameworkElementAdorner.cs" />
     <Compile Include="Components\FrameworkElementDragBehavior.cs" />
     <Compile Include="Components\FrameworkElementDropBehavior.cs" />
     <Compile Include="Components\IDraggable.cs" />
