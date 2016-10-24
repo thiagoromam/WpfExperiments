@@ -20,7 +20,6 @@ namespace DragAndDrop
             return args.Data is GameObject &&
                    (args.DropType == DropType.Normal || args.Target is GameObject);
         }
-
         public void Execute(object parameter)
         {
             var args = (DropEventArgs)parameter;
@@ -30,7 +29,7 @@ namespace DragAndDrop
             switch (args.DropType)
             {
                 case DropType.Top: 
-                    ChangeIndex(gameObject, target, 0);
+                    ChangeIndex(gameObject, target);
                     break;
                 case DropType.Normal:
                     MoveTo(gameObject, target);
@@ -47,21 +46,24 @@ namespace DragAndDrop
             gameObject.Parent = target;
             (target?.Children ?? SceneData.GameObjects).Add(gameObject);
         }
-        private void ChangeIndex(GameObject gameObject, GameObject target, int increment)
+        private void ChangeIndex(GameObject gameObject, GameObject target, int increment = 0)
         {
-            //var collection = target?.Parent.Children ?? SceneData.GameObjects;
+            var collection = target?.Parent.Children ?? SceneData.GameObjects;
 
-            //if (!collection.Contains(gameObject))
-            //{
-            //    MoveTo(gameObject, target?.Parent);
-            //    ChangeIndex(gameObject, target, increment);
-            //    return;
-            //}
-
-            //var oldIndex = Math.Max(collection.IndexOf(gameObject), 0);
-            //var newIndex = Math.Min(collection.IndexOf(target) + increment, collection.Count);
+            if (!collection.Contains(gameObject))
+            {
+                MoveTo(gameObject, target?.Parent);
+                ChangeIndex(gameObject, target, increment);
+                return;
+            }
             
-            //collection.Move(oldIndex, newIndex);
+            var oldIndex = Math.Max(collection.IndexOf(gameObject), 0);
+            var newIndex = Math.Min(collection.IndexOf(target) + increment, collection.Count);
+
+            if (newIndex > oldIndex)
+                newIndex--;
+
+            collection.Move(oldIndex, newIndex);
         }
     }
 }
