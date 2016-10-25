@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using DragAndDrop.Components;
 
@@ -15,10 +14,9 @@ namespace DragAndDrop
 
         public bool CanExecute(object parameter)
         {
-            var args = (DropEventArgs)parameter;
+            var args = (DropEventArgs) parameter;
 
-            return args.Data is GameObject &&
-                   (args.DropType == DropType.Normal || args.Target is GameObject);
+            return IsDataValid(args) && IsHierarchyValid(args);
         }
         public void Execute(object parameter)
         {
@@ -39,7 +37,20 @@ namespace DragAndDrop
                     break;
             }
         }
-        
+
+        private static bool IsDataValid(DropEventArgs args)
+        {
+            return args.Data is GameObject;
+        }
+        private static bool IsHierarchyValid(DropEventArgs args)
+        {
+            var parent = args.Target as GameObject;
+            while (parent != null && parent != args.Data)
+                parent = parent.Parent;
+
+            return parent == null;
+        }
+
         private void MoveTo(GameObject gameObject, GameObject target)
         {
             (gameObject.Parent?.Children ?? SceneData.GameObjects).Remove(gameObject);
@@ -48,7 +59,7 @@ namespace DragAndDrop
         }
         private void ChangeIndex(GameObject gameObject, GameObject target, int increment = 0)
         {
-            var collection = target?.Parent.Children ?? SceneData.GameObjects;
+            var collection = target?.Parent?.Children ?? SceneData.GameObjects;
 
             if (!collection.Contains(gameObject))
             {

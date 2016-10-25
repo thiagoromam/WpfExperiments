@@ -32,7 +32,7 @@ namespace DragAndDrop.Components
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            var adornedElementRect = new Rect(this.AdornedElement.DesiredSize);
+            var adornedElementRect = new Rect(AdornedElement.RenderSize);
 
             var renderBrush = new SolidColorBrush(Colors.Red) { Opacity = 0.5 };
             var renderPen = new Pen(new SolidColorBrush(Colors.White), 1.5);
