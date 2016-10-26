@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:DragAndDrop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:components="clr-namespace:DragAndDrop.Components"
+        xmlns:unity="clr-namespace:DragAndDrop.Unity"
         mc:Ignorable="d"
         Title="Drag and Drop"
         Height="350" Width="525">
@@ -13,13 +14,9 @@
     <Window.DataContext>
         <local:ViewModel />
     </Window.DataContext>
-    
+
     <Grid Name="MainGrid">
-        <TreeView ItemsSource="{Binding GameObjects}">
-            <i:Interaction.Behaviors>
-                <components:FrameworkElementDropBehavior DropCommand="{Binding MoveGameObjectCommand}" ShowAdorner="False" />
-            </i:Interaction.Behaviors>
-            
+        <TreeView ItemsSource="{Binding GameObjects}" Background="LightGray">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="IsExpanded" Value="True" />
@@ -28,14 +25,12 @@
             
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding Name}" Background="Gray" />
-
+                    <TextBlock Text="{Binding Name}">
                         <i:Interaction.Behaviors>
-                            <components:FrameworkElementDragBehavior />
-                            <components:FrameworkElementDropBehavior DropCommand="{Binding DataContext.MoveGameObjectCommand, ElementName=MainGrid}" />
+                            <unity:DraggableBehavior />
+                            <unity:TreeViewItemDroppableBehavior />
                         </i:Interaction.Behaviors>
-                    </StackPanel>
+                    </TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

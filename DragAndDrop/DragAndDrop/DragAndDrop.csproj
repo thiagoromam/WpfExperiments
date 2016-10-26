@@ -62,6 +62,11 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="MoveGameObjectCommand.cs" />
     <Compile Include="SceneData.cs" />
+    <Compile Include="Unity\DraggableBehavior.cs" />
+    <Compile Include="Unity\DropEventArgs.cs" />
+    <Compile Include="Unity\DropType.cs" />
+    <Compile Include="Unity\TreeViewItemAdorner.cs" />
+    <Compile Include="Unity\TreeViewItemDroppableBehavior.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
