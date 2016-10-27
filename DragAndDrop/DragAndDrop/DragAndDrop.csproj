@@ -64,6 +64,7 @@
     <Compile Include="SceneData.cs" />
     <Compile Include="Unity\DraggableBehavior.cs" />
     <Compile Include="Unity\DropEventArgs.cs" />
+    <Compile Include="Unity\DroppableBehavior.cs" />
     <Compile Include="Unity\DropType.cs" />
     <Compile Include="Unity\TreeViewItemAdorner.cs" />
     <Compile Include="Unity\TreeViewItemDroppableBehavior.cs" />

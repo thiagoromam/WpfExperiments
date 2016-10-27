@@ -8,7 +8,6 @@ namespace DragAndDrop.Unity
 {
     public class TreeViewItemAdorner : Adorner
     {
-        private readonly Border _treeViewItemBorder;
         private readonly TreeViewItemAdorner _parentAdorner;
         private readonly bool _isParentFirstElement;
         private AdornerLayer _layer;
@@ -18,8 +17,7 @@ namespace DragAndDrop.Unity
         {
             var treeViewItem = adornedElement.ParentsUntil<TreeViewItem>();
             var parentTreeViewItem = treeViewItem.ParentsUntil<TreeViewItem>();
-
-            _treeViewItemBorder = treeViewItem.FindChild<Border>("Bd");
+            
             _parentAdorner = parentTreeViewItem?.FindBehaviorInChildren<TreeViewItemDroppableBehavior>().Adorner;
             _isParentFirstElement = parentTreeViewItem?.Items[0] == treeViewItem.DataContext;
 
@@ -84,7 +82,7 @@ namespace DragAndDrop.Unity
         }
         private void DrawBox(DrawingContext drawingContext)
         {
-            var rect = new Rect(_treeViewItemBorder.DesiredSize);
+            var rect = new Rect(AdornedElement.RenderSize);
             var pen = new Pen(BorderBrush, 2);
 
             drawingContext.DrawRoundedRectangle(BackgroundBrush, pen, rect, 2, 2);

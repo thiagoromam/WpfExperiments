@@ -16,9 +16,14 @@
 
     <Grid Name="MainGrid">
         <TreeView ItemsSource="{Binding GameObjects}" Background="LightGray">
+            <i:Interaction.Behaviors>
+                <unity:DroppableBehavior DropCommand="{Binding MoveGameObjectCommand}" />
+            </i:Interaction.Behaviors>
+            
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="IsExpanded" Value="True" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
             

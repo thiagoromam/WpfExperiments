@@ -14,6 +14,7 @@ namespace DragAndDrop
 
         public string Name { get; }
         public GameObject Parent { get; set; }
+        public bool IsSelected { get; set; }
         public Type DataType => typeof(GameObject);
         public ObservableCollection<GameObject> Children { get; }
 
