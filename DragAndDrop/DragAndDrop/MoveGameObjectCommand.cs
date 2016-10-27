@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
-using DragAndDrop.Components;
+using DragAndDrop.Unity;
 
 namespace DragAndDrop
 {
@@ -23,16 +24,22 @@ namespace DragAndDrop
             var args = (DropEventArgs)parameter;
             var gameObject = (GameObject)args.Data;
             var target = args.Target as GameObject;
-            
+
+            if (args.DropType == DropType.InsideOnTop)
+            {
+                target = target.Children.First();
+                args.DropType = DropType.Above;
+            }
+
             switch (args.DropType)
             {
-                case DropType.Top: 
+                case DropType.Above: 
                     ChangeIndex(gameObject, target);
                     break;
-                case DropType.Normal:
+                case DropType.Inside:
                     MoveTo(gameObject, target);
                     break;
-                case DropType.Bottom:
+                case DropType.Bellow:
                     ChangeIndex(gameObject, target, 1);
                     break;
             }

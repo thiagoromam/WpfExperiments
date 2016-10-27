@@ -10,6 +10,7 @@ namespace DragAndDrop
 {
     public static class Helpers
     {
+        // For test
         public static GameObject Add(this ObservableCollection<GameObject> collection, string name, Action<GameObject> after = null)
         {
             var g = new GameObject(name);
@@ -27,6 +28,25 @@ namespace DragAndDrop
             return g;
         }
 
+        // Behavior
+        public static T GetBehavior<T>(this DependencyObject element) where T : Behavior
+        {
+            var behaviors = Interaction.GetBehaviors(element);
+            return behaviors.OfType<T>().SingleOrDefault();
+        }
+        public static T FindBehaviorInChildren<T>(this DependencyObject parent) where T : Behavior
+        {
+            foreach (var child in parent.GetChildren())
+            {
+                var behavior = child.GetBehavior<T>() ?? child.FindBehaviorInChildren<T>();
+                if (behavior != null)
+                    return behavior;
+            }
+
+            return null;
+        }
+
+        // DependencyObject
         public static T ParentsUntil<T>(this DependencyObject child) where T : DependencyObject
         {
             var parentObject = VisualTreeHelper.GetParent(child);
@@ -55,11 +75,10 @@ namespace DragAndDrop
                 yield return VisualTreeHelper.GetChild(element, i);
         }
 
-        public static T GetBehavior<T>(this DependencyObject element) where T : Behavior
+        // Application
+        public static T FindResource<T>(string name)
         {
-            var behaviors = Interaction.GetBehaviors(element);
-
-            return behaviors.OfType<T>().SingleOrDefault();
+            return (T)Application.Current.FindResource(name);
         }
     }
 }

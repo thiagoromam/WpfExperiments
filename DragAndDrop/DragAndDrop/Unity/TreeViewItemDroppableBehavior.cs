@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -14,7 +13,6 @@ namespace DragAndDrop.Unity
         private DropType _dropType;
         private DropType _lastDropType;
         private bool _canBeDropped;
-        private bool _allowDropAbove;
 
         static TreeViewItemDroppableBehavior()
         {
@@ -38,12 +36,9 @@ namespace DragAndDrop.Unity
         {
             base.OnAttached();
 
-            Adorner = new TreeViewItemAdorner(AssociatedObject);
             _treeViewItem = AssociatedObject.ParentsUntil<TreeViewItem>();
-
-            var treeView = _treeViewItem.ParentsUntil<TreeView>();
-            _allowDropAbove = Equals(treeView.ItemContainerGenerator.ContainerFromIndex(0), _treeViewItem);
-
+            Adorner = new TreeViewItemAdorner(AssociatedObject);
+            
             AssociatedObject.AllowDrop = true;
             AssociatedObject.DragEnter += OnDragEnter;
             AssociatedObject.DragOver += OnDragOver;
@@ -108,14 +103,17 @@ namespace DragAndDrop.Unity
         private DropType GetDropType(DragEventArgs e)
         {
             var pos = e.GetPosition(AssociatedObject);
-
-            if (_allowDropAbove && pos.Y <= EdgeDropMargin)
+            
+            if (pos.Y <= EdgeDropMargin)
                 return DropType.Above;
 
-            if (pos.Y >= AssociatedObject.ActualHeight - EdgeDropMargin)
-                return DropType.Bellow;
+            if (pos.Y < AssociatedObject.ActualHeight - EdgeDropMargin)
+                return DropType.Inside;
 
-            return DropType.Inside;
+            if (_treeViewItem.IsExpanded && _treeViewItem.Items.Count > 0)
+                return DropType.InsideOnTop;
+
+            return DropType.Bellow;
         }
         private object GetCommandParameter()
         {

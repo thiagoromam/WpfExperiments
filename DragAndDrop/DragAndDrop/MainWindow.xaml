@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DragAndDrop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:components="clr-namespace:DragAndDrop.Components"
         xmlns:unity="clr-namespace:DragAndDrop.Unity"
         mc:Ignorable="d"
         Title="Drag and Drop"
@@ -28,7 +27,7 @@
                     <TextBlock Text="{Binding Name}">
                         <i:Interaction.Behaviors>
                             <unity:DraggableBehavior />
-                            <unity:TreeViewItemDroppableBehavior />
+                            <unity:TreeViewItemDroppableBehavior DropCommand="{Binding DataContext.MoveGameObjectCommand, ElementName=MainGrid}" />
                         </i:Interaction.Behaviors>
                     </TextBlock>
                 </HierarchicalDataTemplate>

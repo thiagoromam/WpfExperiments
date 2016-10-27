@@ -2,8 +2,9 @@
 {
     public enum DropType
     {
-        Inside = 1,
-        Above,
+        Above = 1,
+        Inside,
+        InsideOnTop,
         Bellow
     }
 }
